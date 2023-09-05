@@ -1,5 +1,6 @@
 #include "Pantalla.h"
 #include "Definiciones/debug.h"
+#include "Definiciones/constantes.h"
 
 extern bool interrumpirAnimacion;
 extern int menuPos;
@@ -79,7 +80,7 @@ float Pantalla::obtenerDolarBlue()
             salida = doc["blue"]["value_sell"];
             // salida = "Dolar: " + String(dolarBlueVenta, 2);
 
-            debugPrint("| Api : ");
+            debugPrint("| Api dolar: ");
             debugPrint(salida);
             debugPrintln(" |");
         }
@@ -309,7 +310,7 @@ void Pantalla::dibujarIndicadorPosicion_v2(bool izquierda, bool menu)
     int xR, xL, opt, pos1, pos2, pos3;
     if (izquierda)
     {
-        xL = anchoBarra;
+        xL = anchoBarra - 1;
         xR = 0;
         pos1 = 0;
         pos2 = 10;
@@ -317,8 +318,8 @@ void Pantalla::dibujarIndicadorPosicion_v2(bool izquierda, bool menu)
     }
     else
     {
-        xL = 128 - anchoBarra;
-        xR = 128 - anchoBarra;
+        xL = 127 - anchoBarra;
+        xR = 127 - anchoBarra;
         pos1 = 21;
         pos2 = 10;
         pos3 = 0;

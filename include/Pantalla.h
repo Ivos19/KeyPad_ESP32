@@ -30,6 +30,9 @@ const int intervaloRequestClima = 600000; // 1800000; // 30min
 const unsigned long intervalCheckEntorno = 50000;
 // Cantidad de animaciones.
 const int cantAnimaciones = 7;
+/*
+// Cantidad de animaciones.
+const int cantAnimaciones = 7;
 // Coordenada X posicion Menus.
 const int xxMenu = 0;
 // Coordenada Y posicion Menus.
@@ -38,8 +41,8 @@ const int yyMenu = 0;
 const int anchoIconMenu = 16;
 // Ancho indicador menu.
 const int altoIconMenu = 16;
-// Ancho barras menus/macro/
-const int anchoBarra = 4;
+// Ancho barras menus y macros
+const int anchoBarra = 4; */
 
 class Pantalla
 {
@@ -55,11 +58,10 @@ public:
     // Usada para mostrar el menu.
     void menu(int animacion, int macro);
 
-    // Busca en https://bluelytics.com.ar el valor del dolar y devuelve un Float con el valor | 000 => Error Json | 001 => Error HTTP |
-    float obtenerDolarBlue();
-
-    // Busca en urlClima el clima y setea las variables de clase relacionadas | 000 => Error Json | 001 => Error HTTP |
-    int obtenerClima();
+    // Controlador HTTP Clima, no jodas, no voy a armar otra clase.
+    void controladorClima();
+    // Ya se, tendria que ser una clase controlar, pero esto de mostrar cosas en el menu me enloquecio y lo deje aca por aragan.
+    String controladorDolar();
 
 private:
     Adafruit_SSD1306 display;
@@ -83,7 +85,7 @@ private:
     // Usada para escribir en las animaciones ya que no borra al inicar.
     void escribirEnAnimacion(int xx, int yy, String texto, int tamano);
 
-        // URL de la API
+    // URL de la API
     const char *urlDolar = "https://api.bluelytics.com.ar/v2/latest";
     // URL Clima con key
     const char *urlClima = "https://api.openweathermap.org/data/2.5/weather?q=Rosario,ar&units=metric&APPID=4cf7a4dfea9677bffd35c0aef49394d4";
@@ -120,8 +122,8 @@ private:
     int dolarSubiendo = 2;
     // Usado para saber el nuemero de request realiazadas.
     int numeroDeRequest = 0;
-    // Ya se, tendria que ser una clase controlar, pero esto de mostrar cosas en el menu me enloquecio y lo deje aca por aragan.
-    String controladorDolar();
+    // Busca en https://bluelytics.com.ar el valor del dolar y devuelve un Float con el valor | 000 => Error Json | 001 => Error HTTP |
+    float obtenerDolarBlue();
 
     // Id del clima actual obtenido.
     int idClima;
@@ -131,8 +133,8 @@ private:
     int humedadClima;
     // Registro de timepo para la consulta HTTP.
     int climaPedidoEn = 0;
-    // Controlador HTTP Clima, no jodas, no voy a armar otra clase.
-    void controladorClima();
+    // Busca en urlClima el clima y setea las variables de clase relacionadas | 000 => Error Json | 001 => Error HTTP |
+    int obtenerClima();
 
     // Almacena el tiempo del último ciclo.
     unsigned long previousMillis = 0;
