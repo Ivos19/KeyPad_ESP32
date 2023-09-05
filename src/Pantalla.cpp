@@ -1,6 +1,7 @@
 #include "Pantalla.h"
 #include "Definiciones/debug.h"
 #include "Definiciones/constantes.h"
+#include "Definiciones/urls.h"
 
 extern bool interrumpirAnimacion;
 extern int menuPos;
