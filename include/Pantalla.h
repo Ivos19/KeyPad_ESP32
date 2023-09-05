@@ -85,11 +85,6 @@ private:
     // Usada para escribir en las animaciones ya que no borra al inicar.
     void escribirEnAnimacion(int xx, int yy, String texto, int tamano);
 
-    // URL de la API
-    const char *urlDolar = "https://api.bluelytics.com.ar/v2/latest";
-    // URL Clima con key
-    const char *urlClima = "https://api.openweathermap.org/data/2.5/weather?q=Rosario,ar&units=metric&APPID=4cf7a4dfea9677bffd35c0aef49394d4";
-
     // Numero maximo de framas para las animaciones.
     static const int maxFrames = 60;
 
