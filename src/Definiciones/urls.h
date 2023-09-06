@@ -2,8 +2,8 @@
 #define URLs_H
 
 // URL de la API
-const char *urlDolar = "BEBEBEBEB";
+const char *urlDolar = "Hola";
 // URL Clima con key
-const char *urlClima = "BEBEBBE";
+const char *urlClima = "Hola";
 
 #endif
