@@ -23,6 +23,9 @@ const int botonPin = 4;
 #define BUZZER_PIN 17
 
 // Botones
+// Nivel de boton apretado
+#define presionado HIGH // LOW
+// Cantidad de botones
 const int cantBotones = 9;
 // Relacionado a mensajes[] en ControladorBotones
 const int gpioBotones[cantBotones] = {
