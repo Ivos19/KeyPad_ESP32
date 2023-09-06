@@ -2,6 +2,7 @@
 #define BOTON_H
 
 #include <Arduino.h>
+#include "Definiciones/gpio.h"
 
 class Boton
 {

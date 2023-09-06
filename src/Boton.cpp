@@ -2,7 +2,17 @@
 
 #include "Definiciones/debug.h"
 
-void Boton::iniciarBoton() { pinMode(_pin, INPUT_PULLUP); }
+void Boton::iniciarBoton()
+{
+    if (_pin == botonPin)
+    {
+        pinMode(_pin, INPUT_PULLUP);
+    }
+    else
+    {
+        pinMode(_pin, INPUT_PULLDOWN);
+    }
+}
 
 void Boton::setPin(int pin) { _pin = pin; }
 
@@ -20,13 +30,27 @@ String Boton::getMensaje() { return _mensaje; }
 
 bool Boton::presionando()
 {
-    if (digitalRead(_pin) == LOW)
+    if (_pin == botonPin)
     {
-        return true;
+        if (digitalRead(_pin) == !presionado)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
     else
     {
-        return false;
+        if (digitalRead(_pin) == presionado)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }
 
