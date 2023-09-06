@@ -4,7 +4,7 @@
 
 void Boton::iniciarBoton()
 {
-    if (_pin == botonPin)
+    if (_pin == BotonEncoder)
     {
         pinMode(_pin, INPUT_PULLUP);
     }
@@ -30,7 +30,7 @@ String Boton::getMensaje() { return _mensaje; }
 
 bool Boton::presionando()
 {
-    if (_pin == botonPin)
+    if (_pin == BotonEncoder)
     {
         if (digitalRead(_pin) == !presionado)
         {

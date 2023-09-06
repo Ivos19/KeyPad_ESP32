@@ -34,11 +34,11 @@ void ControladorBotones::buscarPresionados(ControladorClientes &cc, ControladorU
     {
         bool estado = botones[i].checkEstado();
         debugTrue(estado, ("Se apreto el boton: " + String(botones[i].getPin()) + " por " + String(botones[i].getUltimaDuracion()) + " ms"));
-        if (i == 8 && estado && botones[i].getUltimaDuracion() < 200) // Evitamos enviar mensaje cuando mantenemos el encoder presionado por mas de 200ms. Evitando enviar mensaje cuando en realidad navegamos por el menu.
+        if (i == posicionBotonEncoder && estado && botones[i].getUltimaDuracion() < 200) // Evitamos enviar mensaje cuando mantenemos el encoder presionado por mas de 200ms. Evitando enviar mensaje cuando en realidad navegamos por el menu.
         {
             cu.responder_a_Clientes(cc, ("G" + String(macroPos) + botones[i].getMensaje()).c_str());
         }
-        else if (estado && i != 8)
+        else if (estado && i != posicionBotonEncoder)
         {
             cu.responder_a_Clientes(cc, ("G" + String(macroPos) + botones[i].getMensaje()).c_str());
         }

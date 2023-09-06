@@ -22,7 +22,7 @@ void Encoder::encoderLoop()
     encoder->tick(); // just call tick() to check the state.
 
     int newPos = encoder->getPosition();
-    if (pos != newPos && digitalRead(botonPin) == !presionado)
+    if (pos != newPos && digitalRead(BotonEncoder) == !presionado)
     {
         int dir = (int)(encoder->getDirection());
 

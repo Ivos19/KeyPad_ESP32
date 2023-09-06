@@ -7,7 +7,7 @@
 // DT - GPIO15
 #define PIN_IN2 15
 // SW - GPIO4
-const int botonPin = 4;
+#define BotonEncoder 4
 
 // Oled - Define las pines para la comunicación I2C con la pantalla OLED
 // SDA - GPIO23
@@ -25,19 +25,21 @@ const int botonPin = 4;
 // Botones
 // Nivel de boton apretado
 #define presionado HIGH // LOW
+// Defino posicion del GPIO del boton del encoder entro del array para usar en logica luego.
+#define posicionBotonEncoder 8
 // Cantidad de botones
 const int cantBotones = 9;
 // Relacionado a mensajes[] en ControladorBotones
 const int gpioBotones[cantBotones] = {
-    13,       // Boton A
-    12,       // Boton B
-    14,       // Boton C
-    27,       // Boton D
-    26,       // Boton E
-    25,       // Boton F
-    33,       // Boton G
-    32,       // Boton H
-    botonPin, // Boton I encoder (4)
+    13,           // Boton A
+    12,           // Boton B
+    14,           // Boton C
+    27,           // Boton D
+    26,           // Boton E
+    25,           // Boton F
+    33,           // Boton G
+    32,           // Boton H
+    BotonEncoder, // Boton I encoder (4) posicion 8.
 };
 
 #endif
