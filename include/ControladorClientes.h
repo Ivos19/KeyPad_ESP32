@@ -13,6 +13,8 @@ public:
     ControladorClientes();
     void posibleClienteNuevo(IPAddress ip, uint16_t port);
     void mostrarListaSiNuevo();
+    void CrearCliente(IPAddress i, uint16_t p);
+    void mostrarLista();
 
 private:
     void pitido(int tono);
