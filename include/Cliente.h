@@ -26,7 +26,7 @@ public:
 private:
     int id;
     IPAddress ip;
-    uint16_t port;
+    int port;
 };
 
 #endif

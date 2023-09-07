@@ -30,7 +30,7 @@ void Cliente::mostrarse()
     debugPrint(" | Puerto: ");
     debugPrint(getPort());
     debugPrint(" | Id:  ");
-    Serial.println(getId());
+    debugPrintln(getId());
 }
 
 // Setters

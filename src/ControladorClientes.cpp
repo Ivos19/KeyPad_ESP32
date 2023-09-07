@@ -1,4 +1,5 @@
 #include "ControladorClientes.h"
+#include "Definiciones/debug.h"
 
 ControladorClientes::ControladorClientes()
 {
@@ -14,13 +15,18 @@ void ControladorClientes::posibleClienteNuevo(IPAddress ip, uint16_t port)
 
     if (!yaExiste(ip, port))
     {
-        int ultimaPos = BuscarUltimoLugar();
-        if (ultimaPos < maxClientes)
-        {
-            Cliente nuevoCliente = Cliente(ip, port);
-            nuevoCliente.setId(ultimaPos);
-            clientes[ultimaPos] = nuevoCliente;
-        }
+        CrearCliente(ip, port);
+    }
+}
+
+void ControladorClientes::CrearCliente(IPAddress ip, uint16_t port)
+{
+    int ultimaPos = BuscarUltimoLugar();
+    if (ultimaPos < maxClientes)
+    {
+        Cliente nuevoCliente = Cliente(ip, port);
+        nuevoCliente.setId(ultimaPos);
+        clientes[ultimaPos] = nuevoCliente;
     }
 }
 
@@ -66,20 +72,25 @@ void ControladorClientes::mostrarListaSiNuevo()
 
     if (mostrar)
     {
-        Serial.println("------Lista Clientes------");
-        for (int i = 0; i < maxClientes; i++)
-        {
-            if (clientes[i].getIp() != IPAddress(0, 0, 0, 0))
-            {
-
-                clientes[i].mostrarse();
-                clientesAnteriores[i] = clientes[i];
-            }
-        }
-        Serial.println("--------------------------");
-
-        pitido(5000);
+        mostrarLista();
     }
+}
+
+void ControladorClientes::mostrarLista()
+{
+    debugPrintln("------Lista Clientes------");
+    for (int i = 0; i < maxClientes; i++)
+    {
+        if (clientes[i].getIp() != IPAddress(0, 0, 0, 0))
+        {
+
+            clientes[i].mostrarse();
+            clientesAnteriores[i] = clientes[i];
+        }
+    }
+    debugPrintln("--------------------------");
+
+    pitido(5000);
 }
 
 void ControladorClientes::pitido(int tono)

@@ -17,6 +17,8 @@ public:
     void buscarGiroEncoder(ControladorClientes &controlClientes, ControladorUDP &controladorUDP);
 
 private:
+    void aMimir();
+
     const char *_mensajes[11] = {
         "A", // GPIO13
         "B", // GPIO12

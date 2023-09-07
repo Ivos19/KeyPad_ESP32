@@ -28,7 +28,7 @@
 // Defino posicion del GPIO del boton del encoder entro del array para usar en logica luego.
 #define posicionBotonEncoder 8
 // Cantidad de botones
-const int cantBotones = 9;
+#define cantBotones 9
 // Relacionado a mensajes[] en ControladorBotones
 const int gpioBotones[cantBotones] = {
     13,           // Boton A
