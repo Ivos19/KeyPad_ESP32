@@ -9,11 +9,11 @@ ControladorClientes::ControladorClientes()
     }
 }
 
-void ControladorClientes::posibleClienteNuevo(IPAddress ip, uint16_t port)
+void ControladorClientes::PosibleClienteNuevo(IPAddress ip, uint16_t port)
 {
     bool existe = false;
 
-    if (!yaExiste(ip, port))
+    if (!YaExiste(ip, port))
     {
         CrearCliente(ip, port);
     }
@@ -30,7 +30,7 @@ void ControladorClientes::CrearCliente(IPAddress ip, uint16_t port)
     }
 }
 
-bool ControladorClientes::yaExiste(IPAddress ip, uint16_t port)
+bool ControladorClientes::YaExiste(IPAddress ip, uint16_t port)
 {
     bool yaExiste = false;
     for (int i = 0; i < maxClientes; i++)
@@ -58,7 +58,7 @@ int ControladorClientes::BuscarUltimoLugar()
     return ultimaPos;
 }
 
-void ControladorClientes::mostrarListaSiNuevo()
+void ControladorClientes::MostrarListaSiNuevo()
 {
     bool mostrar = false;
 
@@ -72,11 +72,11 @@ void ControladorClientes::mostrarListaSiNuevo()
 
     if (mostrar)
     {
-        mostrarLista();
+        MostrarLista();
     }
 }
 
-void ControladorClientes::mostrarLista()
+void ControladorClientes::MostrarLista()
 {
     debugPrintln("------Lista Clientes------");
     for (int i = 0; i < maxClientes; i++)
@@ -90,10 +90,10 @@ void ControladorClientes::mostrarLista()
     }
     debugPrintln("--------------------------");
 
-    pitido(5000);
+    Pitido(5000);
 }
 
-void ControladorClientes::pitido(int tono)
+void ControladorClientes::Pitido(int tono)
 {
     tone(BUZZER_PIN, tono, 0.9);
     delay(50);

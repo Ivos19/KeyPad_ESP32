@@ -10,13 +10,18 @@ class ControladorBotones
 {
 public:
     ControladorBotones();
-    void iniciarControlador();
-    bool botonPresionadoYSoltado(int i);
+    void IniciarControlador();
+    bool BotonPresionadoYSoltado(int i);
+    String GetMensajeBotonBoton(int i);
+    long TiempoUltimaAccion();
 
-    void buscarPresionados(ControladorClientes &controlClientes, ControladorUDP &controladorUDP);
-    void buscarGiroEncoder(ControladorClientes &controlClientes, ControladorUDP &controladorUDP);
+    void
+    BuscarPresionados(ControladorClientes &controlClientes, ControladorUDP &controladorUDP);
+    void BuscarGiroEncoder(ControladorClientes &controlClientes, ControladorUDP &controladorUDP);
 
 private:
+    long _tiempoUltimaAccion = 0;
+    void SetTiempoUltimaAccion();
     void aMimir();
 
     const char *_mensajes[11] = {
@@ -28,7 +33,7 @@ private:
         "F", // GPIO25
         "G", // GPIO33
         "H", // GPIO32
-        "I", // GPIO4 Encoder switch e
+        "I", // GPIO4 Encoder switch
         "J", // GPIO2 Encoder giro horario
         "K", // GPIO15 Encoder giro antihorario
     };

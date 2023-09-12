@@ -10,14 +10,14 @@ class Encoder
 {
 public:
     Encoder();
-    void iniciar();
-    void encoderLoop();
-    IRAM_ATTR void checkPosition();
+    void Iniciar();
+    void EncoderLoop();
+    IRAM_ATTR void CheckPosition();
 
 private:
-    void pitido(int tono);
-    static void staticCheckPosition(); // Función estática para la interrupción
-    void interrumpirAnimaciones(int dir);
+    void Pitido(int tono);
+    static void StaticCheckPosition(); // Función estática para la interrupción
+    void InterrumpirAnimaciones(int dir);
 };
 
 #endif

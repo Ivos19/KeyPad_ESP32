@@ -42,4 +42,7 @@ const int gpioBotones[cantBotones] = {
     BotonEncoder, // Boton I encoder (4) posicion 8.
 };
 
+// Bitmask para pines que pueden despertar al ESP
+#define GPIO_BITMASK (GPIO_SEL_4 | GPIO_SEL_12 | GPIO_SEL_13 | GPIO_SEL_14 | GPIO_SEL_25 | GPIO_SEL_26 | GPIO_SEL_27 | GPIO_SEL_32 | GPIO_SEL_33)
+
 #endif

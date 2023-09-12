@@ -3,6 +3,7 @@
 
 #define debugGeneral 0
 #define debugSleep 1
+#define debugBoton 1
 
 #if debugGeneral == 1
 // Remplaza al tipico Serial.Print() para mostrar por consola.
@@ -24,6 +25,17 @@
 #define debugTrue(x, y)
 #define debugWifiManager() wifiManager.setDebugOutput(false);
 
+#endif
+
+#if debugBoton == 1
+#define debugBotonTrue(condicion, mensaje) \
+    if (condicion)                         \
+    {                                      \
+        Serial.println(mensaje);           \
+    }
+
+#else
+#define debugBotonTrue(x, y)
 #endif
 
 #if debugSleep == 1

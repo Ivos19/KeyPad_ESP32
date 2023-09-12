@@ -11,15 +11,15 @@ public:
     Cliente clientes[maxClientes];
 
     ControladorClientes();
-    void posibleClienteNuevo(IPAddress ip, uint16_t port);
-    void mostrarListaSiNuevo();
+    void PosibleClienteNuevo(IPAddress ip, uint16_t port);
+    void MostrarListaSiNuevo();
     void CrearCliente(IPAddress i, uint16_t p);
-    void mostrarLista();
+    void MostrarLista();
 
 private:
-    void pitido(int tono);
+    void Pitido(int tono);
     int BuscarUltimoLugar();
-    bool yaExiste(IPAddress ip, uint16_t port);
+    bool YaExiste(IPAddress ip, uint16_t port);
 
     Cliente clientesAnteriores[maxClientes];
 };

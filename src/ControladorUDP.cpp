@@ -33,7 +33,7 @@ void ControladorUDP::buscarCliente(ControladorClientes &cc)
 
     if (nuevoCliente.getIp() != IPAddress(0, 0, 0, 0))
     {
-        cc.posibleClienteNuevo(nuevoCliente.getIp(), nuevoCliente.getPort());
+        cc.PosibleClienteNuevo(nuevoCliente.getIp(), nuevoCliente.getPort());
     }
 }
 
@@ -54,5 +54,7 @@ void ControladorUDP::enviarMensaje(Cliente c, char const *mensaje)
     udp.write((const uint8_t *)mensaje, strlen(mensaje));
     udp.endPacket();
 
-    debugPrintln("Mensaje enviado: " + String(mensaje));
+    debugPrint("Mensaje enviado: " + String(mensaje));
+    debugSleepPrint("Mensaje enviado: " + String(mensaje));
+    Serial.println("");
 }

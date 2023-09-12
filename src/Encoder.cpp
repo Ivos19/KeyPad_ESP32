@@ -15,14 +15,14 @@ Encoder::Encoder()
     encoderInstance = this;
 }
 
-void Encoder::encoderLoop()
+void Encoder::EncoderLoop()
 {
     static int pos = 0;
 
     encoder->tick(); // just call tick() to check the state.
 
     int newPos = encoder->getPosition();
-    if (pos != newPos && digitalRead(BotonEncoder) == !presionado)
+    if (pos != newPos && digitalRead(BotonEncoder) == presionado)
     {
         int dir = (int)(encoder->getDirection());
 
@@ -34,7 +34,7 @@ void Encoder::encoderLoop()
 
         pos = newPos;
 
-        interrumpirAnimaciones(dir);
+        InterrumpirAnimaciones(dir);
     }
     else if (pos != newPos)
     {
@@ -42,7 +42,7 @@ void Encoder::encoderLoop()
     }
 }
 
-void Encoder::interrumpirAnimaciones(int dir)
+void Encoder::InterrumpirAnimaciones(int dir)
 {
     if (dir == -1)
     {
@@ -57,11 +57,7 @@ void Encoder::interrumpirAnimaciones(int dir)
             menuPos = 1;
         }
 
-        pitido(2000);
-
-        /* ledcWriteTone(buzzerChannel, tonoAlto);
-        delay(20);
-        ledcWriteTone(buzzerChannel, 0); // Detiene el tono (frecuencia 0) */
+        Pitido(2000);
     }
     if (dir == 1)
     {
@@ -74,27 +70,24 @@ void Encoder::interrumpirAnimaciones(int dir)
             macroPos = 1;
         }
 
-        pitido(5000);
-        /* ledcWriteTone(buzzerChannel, tonoBajo);
-        delay(20);
-        ledcWriteTone(buzzerChannel, 0); // Detiene el tono (frecuencia 0) */
+        Pitido(5000);
     }
 }
 
-void Encoder::pitido(int tono)
+void Encoder::Pitido(int tono)
 {
     tone(BUZZER_PIN, tono, 0.9);
     delay(25);
     noTone(BUZZER_PIN);
 }
 
-void Encoder::iniciar()
+void Encoder::Iniciar()
 {
     encoder = new RotaryEncoder(PIN_IN1, PIN_IN2, RotaryEncoder::LatchMode::TWO03);
 
     // register interrupt routine
-    attachInterrupt(digitalPinToInterrupt(PIN_IN1), Encoder::staticCheckPosition, CHANGE);
-    attachInterrupt(digitalPinToInterrupt(PIN_IN2), Encoder::staticCheckPosition, CHANGE);
+    attachInterrupt(digitalPinToInterrupt(PIN_IN1), Encoder::StaticCheckPosition, CHANGE);
+    attachInterrupt(digitalPinToInterrupt(PIN_IN2), Encoder::StaticCheckPosition, CHANGE);
     // pinMode(botonPin, INPUT_PULLUP);
 
     // Buzzer test
@@ -102,12 +95,12 @@ void Encoder::iniciar()
     ledcAttachPin(BUZZER_PIN, buzzerChannel);
 }
 
-void Encoder::staticCheckPosition()
+void Encoder::StaticCheckPosition()
 {
-    encoderInstance->checkPosition();
+    encoderInstance->CheckPosition();
 }
 
-IRAM_ATTR void Encoder::checkPosition()
+IRAM_ATTR void Encoder::CheckPosition()
 {
     encoder->tick(); // just call tick() to check the state.
 }
