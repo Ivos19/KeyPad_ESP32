@@ -4,14 +4,6 @@
 
 void Boton::iniciarBoton()
 {
-    /* if (_pin == BotonEncoder)
-    {
-        pinMode(_pin, INPUT_PULLUP);
-    }
-    else
-    {
-        pinMode(_pin, INPUT_PULLDOWN);
-    } */
     pinMode(_pin, INPUT_PULLDOWN);
 }
 
@@ -31,28 +23,6 @@ String Boton::getMensaje() { return _mensaje; }
 
 bool Boton::presionando()
 {
-    /* if (_pin == BotonEncoder)
-    {
-        if (digitalRead(_pin) == !presionado)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    else
-    {
-        if (digitalRead(_pin) == presionado)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    } */
     if (digitalRead(_pin) == presionado)
     {
         return true;

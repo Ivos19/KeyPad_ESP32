@@ -6,6 +6,8 @@
 #include "ControladorUDP.h"
 #include "Definiciones/gpio.h"
 
+#include <list>
+
 class ControladorBotones
 {
 public:
@@ -15,9 +17,13 @@ public:
     String GetMensajeBotonBoton(int i);
     long TiempoUltimaAccion();
 
-    void
-    BuscarPresionados(ControladorClientes &controlClientes, ControladorUDP &controladorUDP);
+    void BuscarPresionadosV2();
+
+    /* void BuscarPresionados(ControladorClientes &controlClientes, ControladorUDP &controladorUDP); */
     void BuscarGiroEncoder(ControladorClientes &controlClientes, ControladorUDP &controladorUDP);
+
+    // Busca botones presionados y permite combinacion de ellos.
+    void BuscarPresionados_V2(ControladorClientes &controlClientes, ControladorUDP &controladorUDP);
 
 private:
     long _tiempoUltimaAccion = 0;
@@ -38,6 +44,11 @@ private:
         "K", // GPIO15 Encoder giro antihorario
     };
     Boton botones[cantBotones];
+
+    std::list<String> _botonesPresionados;
+    bool EstaEnLaLista(std::list<String> lista, String elemento);
+    bool EsElPrimerBotonDeLaCombinacion(std::list<String> lista, String elemento);
+    bool esCombinacion = false;
 
     // Variable usada para detectar cambios de giro en encoder.
     int giroAnterior = 0;

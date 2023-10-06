@@ -9,6 +9,7 @@
 #include <DHT.h>
 
 #include "Definiciones/Iconos/TempHum.h"
+
 #include "Definiciones/AnimationFrames/sol.h"
 #include "Definiciones/AnimationFrames/dolarUp.h"
 #include "Definiciones/AnimationFrames/dolarDown.h"
@@ -50,40 +51,42 @@ public:
     // Constructor...
     Pantalla();
     // Usado para iniciar la clase.
-    void iniciar();
+    void Iniciar();
     // Limpia la pantalla.
-    void limpiarPantalla();
+    void LimpiarPantalla();
     // Usada para mostrar el texto dado como argumento, junto a coordenadas y tamano.
-    void escribir(int xx, int yy, String texto, int tamano);
+    void Escribir(int xx, int yy, String texto, int tamano);
     // Usada para mostrar el menu.
-    void menu(int animacion, int macro);
-
+    void Menu(int animacion, int macro);
     // Controlador HTTP Clima, no jodas, no voy a armar otra clase.
-    void controladorClima();
+    void ControladorClima();
     // Ya se, tendria que ser una clase controlar, pero esto de mostrar cosas en el menu me enloquecio y lo deje aca por aragan.
-    String controladorDolar();
+    String ControladorDolar();
 
 private:
     Adafruit_SSD1306 display;
     DHT dht;
 
     // Dibuja pantalla Clima.
-    void dibujarMenuClima();
+    void DibujarMenuClima();
 
     // Dibujar pantalla Dolar.
-    void dibujarMenuDolar();
+    void DibujarMenuDolar();
 
     // Dibuja pantalla Entorno.
     void dibujarMenuEntorno();
+
+    // Dibujar pantalla al dormir
+    void DibujarSleep();
 
     // Dibuja indicadores de opcion de menu seleccionada. NO LIMPIA NI MUESTRA. VIEJO!
     // void dibujarIndicadorPosicion();
 
     // Dibujar barras indicadoras de seleccion para Menu y Macro. NO LIMPIA NI MUESTRA.
-    void dibujarIndicadorPosicion_v2(bool izquierda, bool menu);
+    void DibujarIndicadorPosicion_v2(bool izquierda, bool menu);
 
     // Usada para escribir en las animaciones ya que no borra al inicar.
-    void escribirEnAnimacion(int xx, int yy, String texto, int tamano);
+    void EscribirEnAnimacion(int xx, int yy, String texto, int tamano);
 
     // Numero maximo de framas para las animaciones.
     static const int maxFrames = 60;
@@ -118,7 +121,7 @@ private:
     // Usado para saber el nuemero de request realiazadas.
     int numeroDeRequest = 0;
     // Busca en https://bluelytics.com.ar el valor del dolar y devuelve un Float con el valor | 000 => Error Json | 001 => Error HTTP |
-    float obtenerDolarBlue();
+    float ObtenerDolarBlue();
 
     // Id del clima actual obtenido.
     int idClima;
@@ -129,12 +132,12 @@ private:
     // Registro de timepo para la consulta HTTP.
     int climaPedidoEn = 0;
     // Busca en urlClima el clima y setea las variables de clase relacionadas | 000 => Error Json | 001 => Error HTTP |
-    int obtenerClima();
+    int ObtenerClima();
 
     // Almacena el tiempo del último ciclo.
     unsigned long previousMillis = 0;
     // Medimos periodicamente.
-    void medirLocal();
+    void MedirLocal();
 };
 
 #endif

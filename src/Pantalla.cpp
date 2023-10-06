@@ -2,6 +2,7 @@
 #include "Definiciones/debug.h"
 #include "Definiciones/constantes.h"
 #include "Definiciones/urls.h"
+#include "Definiciones/Iconos/Dormir.h"
 
 extern bool interrumpirAnimacion;
 extern int menuPos;
@@ -14,7 +15,7 @@ Pantalla::Pantalla() : dht(DHT_PIN, DHT11)
     Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 }
 
-void Pantalla::iniciar()
+void Pantalla::Iniciar()
 {
     // Inicializa la comunicación I2C
     Wire.begin(OLED_SDA, OLED_SCL);
@@ -30,7 +31,7 @@ void Pantalla::iniciar()
     }
 }
 
-void Pantalla::escribir(int xx, int yy, String texto, int tamano)
+void Pantalla::Escribir(int xx, int yy, String texto, int tamano)
 {
     display.clearDisplay();
     display.setTextSize(tamano);
@@ -41,7 +42,7 @@ void Pantalla::escribir(int xx, int yy, String texto, int tamano)
     display.setCursor(0, 0);
 }
 
-void Pantalla::escribirEnAnimacion(int xx, int yy, String texto, int tamano)
+void Pantalla::EscribirEnAnimacion(int xx, int yy, String texto, int tamano)
 {
     display.setTextSize(tamano);
     display.setCursor(xx, yy);
@@ -49,12 +50,12 @@ void Pantalla::escribirEnAnimacion(int xx, int yy, String texto, int tamano)
     display.print(texto);
 }
 
-void Pantalla::limpiarPantalla()
+void Pantalla::LimpiarPantalla()
 {
     display.clearDisplay();
 }
 
-float Pantalla::obtenerDolarBlue()
+float Pantalla::ObtenerDolarBlue()
 {
     float salida;
 
@@ -97,28 +98,28 @@ float Pantalla::obtenerDolarBlue()
     return salida;
 }
 
-int Pantalla::obtenerClima()
+int Pantalla::ObtenerClima()
 {
     int salida;
 
-    // HTTPClient http;
-    // http.begin(urlClima);
+    HTTPClient http;
+    http.begin(urlClima);
 
-    // int httpCode = http.GET();
+    int httpCode = http.GET();
 
-    if (1) // httpCode > 0)
+    if (httpCode > 0)
     {
-        // String payload = http.getString();
-        const char *payload = "{\"coord\":{\"lon\":-60.6393,\"lat\":-32.9468},\"weather\":[{\"id\":800,\"main\":\"Clear\",\"description\":\"clear sky\",\"icon\":\"01n\"}],\"base\":\"stations\",\"main\":{\"temp\":9.95,\"feels_like\":9.09,\"temp_min\":9.95,\"temp_max\":10.62,\"pressure\":1013,\"humidity\":81},\"visibility\":10000,\"wind\":{\"speed\":2.06,\"deg\":190},\"clouds\":{\"all\":0},\"dt\":1692863101,\"sys\":{\"type\":1,\"id\":8217,\"country\":\"AR\",\"sunrise\":1692873030,\"sunset\":1692913194},\"timezone\":-10800,\"id\":3838583,\"name\":\"Rosario\",\"cod\":200}";
+        String payload = http.getString();
+        // const char *payload = "{\"coord\":{\"lon\":-60.6393,\"lat\":-32.9468},\"weather\":[{\"id\":800,\"main\":\"Clear\",\"description\":\"clear sky\",\"icon\":\"01n\"}],\"base\":\"stations\",\"main\":{\"temp\":9.95,\"feels_like\":9.09,\"temp_min\":9.95,\"temp_max\":10.62,\"pressure\":1013,\"humidity\":81},\"visibility\":10000,\"wind\":{\"speed\":2.06,\"deg\":190},\"clouds\":{\"all\":0},\"dt\":1692863101,\"sys\":{\"type\":1,\"id\":8217,\"country\":\"AR\",\"sunrise\":1692873030,\"sunset\":1692913194},\"timezone\":-10800,\"id\":3838583,\"name\":\"Rosario\",\"cod\":200}";
 
-        // debugPrintln(payload);
+        debugPantallaPrintln(payload);
 
         // Parsear el JSON
         StaticJsonDocument<1024> doc;
         DeserializationError error = deserializeJson(doc, payload);
         if (error)
         {
-            debugPrintln("Error Json Clima");
+            debugPantallaPrintln("Error Json Clima");
             salida = 00;
         }
         else
@@ -140,33 +141,47 @@ int Pantalla::obtenerClima()
                 idClima = idC / 100;
             }
 
-            debugPrint("| Id CLima: ");
-            debugPrint(idClima);
-            debugPrint(" | Temperatura: ");
-            debugPrint(tempClima);
-            debugPrint(" | Humedad: ");
-            debugPrint(humedadClima);
-            debugPrintln(" |");
+            debugPantallaPrint("| Id CLima: ");
+            debugPantallaPrint(idClima);
+            debugPantallaPrint(" | Temperatura: ");
+            debugPantallaPrint(tempClima);
+            debugPantallaPrint(" | Humedad: ");
+            debugPantallaPrint(humedadClima);
+            debugPantallaPrintln(" |");
         }
     }
     else
     {
-        debugPrintln("Error HTTP  Clima");
+        debugPantallaPrintln("Error HTTP  Clima");
         salida = 01;
     }
 
-    // http.end();
+    http.end();
 
     return salida;
 }
 
-void Pantalla::menu(int a, int m)
+void Pantalla::Menu(int a, int m)
 {
-    dibujarMenuClima();
+    DibujarMenuClima();
 
     dibujarMenuEntorno();
 
-    dibujarMenuDolar();
+    DibujarMenuDolar();
+
+    DibujarSleep();
+}
+
+void Pantalla::DibujarSleep()
+{
+
+    if (menuPos == 4)
+    {
+        display.clearDisplay();
+
+        display.drawBitmap(47, 0, icnoMimir[0], 32, 32, 1);
+        display.display();
+    }
 }
 
 void Pantalla::dibujarMenuEntorno()
@@ -178,20 +193,20 @@ void Pantalla::dibujarMenuEntorno()
         int idAnimacion = 6;
         while (i < numeroDeFrames[idAnimacion] && menuPos == 2) // Entorno
         {
-            medirLocal();
+            MedirLocal();
             display.clearDisplay();
 
             display.drawBitmap(20 + xxOffSet, 0, animaciones[idAnimacion][i], 32, 32, 1);
 
-            dibujarIndicadorPosicion_v2(true, true);
-            dibujarIndicadorPosicion_v2(false, false);
+            DibujarIndicadorPosicion_v2(true, true);
+            DibujarIndicadorPosicion_v2(false, false);
 
             // Dibujamos Tempreatura. Icon - Valor
             display.drawBitmap(xxOffSet + 56, -1, iconosHumTemp[1], 16, 16, 1);
-            escribirEnAnimacion(xxOffSet + 78, 0, String(tempLocal, 0), 2);
+            EscribirEnAnimacion(xxOffSet + 78, 0, String(tempLocal, 0), 2);
             // Dibujamos Humedad. Icon - Valor
             display.drawBitmap(xxOffSet + 56, 16, iconosHumTemp[0], 16, 16, 1);
-            escribirEnAnimacion(xxOffSet + 78, 17, String(humLocal, 0), 2);
+            EscribirEnAnimacion(xxOffSet + 78, 17, String(humLocal, 0), 2);
 
             display.display();
             i++;
@@ -204,7 +219,7 @@ void Pantalla::dibujarMenuEntorno()
     }
 }
 
-void Pantalla::dibujarMenuDolar()
+void Pantalla::DibujarMenuDolar()
 {
     if (menuPos == 3)
     {
@@ -215,8 +230,8 @@ void Pantalla::dibujarMenuDolar()
         {
             display.clearDisplay();
 
-            dibujarIndicadorPosicion_v2(true, true);
-            dibujarIndicadorPosicion_v2(false, false);
+            DibujarIndicadorPosicion_v2(true, true);
+            DibujarIndicadorPosicion_v2(false, false);
 
             if (dolarSubiendo == 2 || numeroDeRequest == 1)
             {
@@ -234,7 +249,7 @@ void Pantalla::dibujarMenuDolar()
                 frames = numeroDeFrames[0];
             }
 
-            escribirEnAnimacion(56 + xxOffSet, 9, controladorDolar(), 2);
+            EscribirEnAnimacion(56 + xxOffSet, 9, ControladorDolar(), 2);
 
             display.display();
 
@@ -248,7 +263,7 @@ void Pantalla::dibujarMenuDolar()
     }
 }
 
-void Pantalla::dibujarMenuClima()
+void Pantalla::DibujarMenuClima()
 {
     if (menuPos == 1)
     {
@@ -256,7 +271,7 @@ void Pantalla::dibujarMenuClima()
         const int offsetIcons = 0;
 
         // Actualizamos datos desde API si son necesarios
-        controladorClima();
+        ControladorClima();
 
         // Revisamos que icono tenemos que poner en funcion del clima dado por la API.
         int id;
@@ -278,8 +293,8 @@ void Pantalla::dibujarMenuClima()
             display.clearDisplay();
 
             // dibujarIndicadorPosicion();
-            dibujarIndicadorPosicion_v2(true, true);
-            dibujarIndicadorPosicion_v2(false, false);
+            DibujarIndicadorPosicion_v2(true, true);
+            DibujarIndicadorPosicion_v2(false, false);
 
             // Dibujamos animacion correspondiente.
             display.drawBitmap(offsetIcons + 20, 0, animaciones[id][i], 32, 32, 1);
@@ -289,10 +304,10 @@ void Pantalla::dibujarMenuClima()
 
             // Dibujamos Tempreatura. Icon - Valor
             display.drawBitmap(offsetIcons + 56, -1, iconosHumTemp[1], 16, 16, 1);
-            escribirEnAnimacion(offsetIcons + 78, 0, temperatura, 2);
+            EscribirEnAnimacion(offsetIcons + 78, 0, temperatura, 2);
             // Dibujamos Humedad. Icon - Valor
             display.drawBitmap(offsetIcons + 56, 16, iconosHumTemp[0], 16, 16, 1);
-            escribirEnAnimacion(offsetIcons + 78, 17, humedad, 2);
+            EscribirEnAnimacion(offsetIcons + 78, 17, humedad, 2);
 
             display.display();
             i++;
@@ -306,7 +321,7 @@ void Pantalla::dibujarMenuClima()
     }
 }
 
-void Pantalla::dibujarIndicadorPosicion_v2(bool izquierda, bool menu)
+void Pantalla::DibujarIndicadorPosicion_v2(bool izquierda, bool menu)
 {
     int xR, xL, opt, pos1, pos2, pos3;
     if (izquierda)
@@ -349,7 +364,7 @@ void Pantalla::dibujarIndicadorPosicion_v2(bool izquierda, bool menu)
     }
 }
 
-String Pantalla::controladorDolar()
+String Pantalla::ControladorDolar()
 {
     String frase;
     float valor;
@@ -359,7 +374,7 @@ String Pantalla::controladorDolar()
         dolarPedidoEn = millis();
         mostrar = true;
 
-        valor = obtenerDolarBlue();
+        valor = ObtenerDolarBlue();
         frase = "D:" + String(valor, 0);
 
         numeroDeRequest++;
@@ -398,16 +413,16 @@ String Pantalla::controladorDolar()
     }
 }
 
-void Pantalla::controladorClima()
+void Pantalla::ControladorClima()
 {
     if (climaPedidoEn != 0 && (millis() - climaPedidoEn) > intervaloRequestClima || climaPedidoEn == 0)
     {
         climaPedidoEn = millis();
-        obtenerClima();
+        ObtenerClima();
     }
 }
 
-void Pantalla::medirLocal()
+void Pantalla::MedirLocal()
 {
     unsigned long currentMillis = millis(); // Obtiene el tiempo actual
 
