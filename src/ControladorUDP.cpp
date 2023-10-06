@@ -55,6 +55,7 @@ void ControladorUDP::enviarMensaje(Cliente c, char const *mensaje)
     udp.endPacket();
 
     debugPrint("Mensaje enviado: " + String(mensaje));
+    debugBotonPrint("Mensaje enviado: " + String(mensaje));
     debugSleepPrint("Mensaje enviado: " + String(mensaje));
     Serial.println("");
 }

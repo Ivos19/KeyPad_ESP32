@@ -78,7 +78,7 @@ void setup()
 
   _cUDP.iniciar(); // Iniciamos UDP.
 
-  _pantalla.iniciar(); // Iniciar Pantalla.  // Revisa de sacar la primer consultas a apis de aca y asi, con alguna variable extra, ejecutar una vez sonar() al mismo timepo. (Mostrar en pantalla INICIO junto con la musica).
+  _pantalla.Iniciar(); // Iniciar Pantalla.  // Revisa de sacar la primer consultas a apis de aca y asi, con alguna variable extra, ejecutar una vez sonar() al mismo timepo. (Mostrar en pantalla INICIO junto con la musica).
 
   _cBTs.IniciarControlador(); // Iniciamos controlador de botones.
 
@@ -119,11 +119,12 @@ void loop() // Trabajo en nueclo 0
 
   _encoder.EncoderLoop();
 
-  _cBTs.BuscarPresionados(_cCLTs, _cUDP);
+  _cBTs.BuscarPresionados_V2(_cCLTs, _cUDP);
+  //_cBTs.BuscarPresionadosV2();
 
   _cBTs.BuscarGiroEncoder(_cCLTs, _cUDP);
 
-  _cMimir.A_Mimir(_cCLTs, _cBTs.TiempoUltimaAccion());
+  _cMimir.A_Mimir(_cCLTs, _cBTs.TiempoUltimaAccion(), _pantalla);
 }
 
 // Función que se eje_cUDPta en el núcleo 1
@@ -135,21 +136,21 @@ void core1Task(void *parameter)
     {
       if (despertado != 0)
       {
-        _pantalla.limpiarPantalla();
-        _pantalla.escribir(0, 5, "Arriba!", 2);
+        _pantalla.LimpiarPantalla();
+        _pantalla.Escribir(0, 5, "Arriba!", 2);
       }
       else
       {
-        _pantalla.escribir(0, 2, "Inicio!", 3);
+        _pantalla.Escribir(0, 2, "Inicio!", 3);
       }
 
       iniciadoTask = true;
 
-      _pantalla.controladorClima();
+      _pantalla.ControladorClima();
 
-      _pantalla.controladorDolar();
+      _pantalla.ControladorDolar();
     }
 
-    _pantalla.menu(0, 0); // En esta prueba los argumentos estan al pedo.
+    _pantalla.Menu(0, 0); // En esta prueba los argumentos estan al pedo.
   }
 }

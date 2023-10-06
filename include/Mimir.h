@@ -4,6 +4,8 @@
 #include "ControladorClientes.h"
 #include "ControladorBotones.h"
 #include "ControladorUDP.h"
+#include "Pantalla.h"
+
 #include <Preferences.h>
 
 class Mimir
@@ -11,7 +13,7 @@ class Mimir
 public:
     Mimir();
     void IniciarMimir(ControladorClientes &cCLTs, ControladorBotones &cb, ControladorUDP &cu);
-    void A_Mimir(ControladorClientes &cCLTs, long tiempoDeUltimaAccion);
+    void A_Mimir(ControladorClientes &cCLTs, long tiempoDeUltimaAccion, Pantalla &pantalla);
     // bool GetRestoreData();
 
 private:

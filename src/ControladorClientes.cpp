@@ -83,7 +83,6 @@ void ControladorClientes::MostrarLista()
     {
         if (clientes[i].getIp() != IPAddress(0, 0, 0, 0))
         {
-
             clientes[i].mostrarse();
             clientesAnteriores[i] = clientes[i];
         }

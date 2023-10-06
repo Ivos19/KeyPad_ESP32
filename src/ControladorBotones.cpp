@@ -47,7 +47,7 @@ String ControladorBotones::GetMensajeBotonBoton(int gpio)
     return mensaje;
 }
 
-void ControladorBotones::BuscarPresionados(ControladorClientes &cc, ControladorUDP &cu)
+/* void ControladorBotones::BuscarPresionados(ControladorClientes &cc, ControladorUDP &cu)
 {
     for (size_t i = 0; i < cantBotones; i++)
     {
@@ -63,6 +63,81 @@ void ControladorBotones::BuscarPresionados(ControladorClientes &cc, ControladorU
             cu.responder_a_Clientes(cc, ("G" + String(macroPos) + botones[i].getMensaje()).c_str());
             SetTiempoUltimaAccion();
         }
+    }
+} */
+
+void ControladorBotones::BuscarPresionados_V2(ControladorClientes &cc, ControladorUDP &cu)
+{
+    for (Boton boton : botones) // Iteramos sobre la lista de botones.
+    {
+        bool estaSiendoApretado = boton.presionando();                                  // Revisamos si el boton actual esta siendo presionado.
+        String mensajeDelBotonActual = boton.getMensaje();                              // Obtenemos el mensaje del boton actual para no buscarlo de nuevo.
+        bool estaEnLaLista = EstaEnLaLista(_botonesPresionados, mensajeDelBotonActual); // Revisamos si ya esta en la lista de botones presionados. Esta lista se actualiza cada vez que se pasa por aca.
+
+        if (estaSiendoApretado && !estaEnLaLista) // Si el Boton esta siendo presionado y no esta en la lista...
+        {
+            _botonesPresionados.push_back(mensajeDelBotonActual); // Lo agregamos al final de la lista.
+
+            if (_botonesPresionados.size() == 1) // Revisamos si solo se apreto un boton.
+            {
+                esCombinacion = false;
+            }
+            else if (_botonesPresionados.size() > 1) // Si se estan presioanndo mas de uno, establecemos que se estab presioando una combinacion de botones.
+            {
+                esCombinacion = true;
+            }
+        }
+        else if (!estaSiendoApretado && estaEnLaLista) // Si el boton esta en la lista y ahora no se esta presioando mas...
+        {
+
+            // Creamos el mensaje a enviar con la combinacion de mensajes de los botones que estaban siendo presionados
+            String mensaje_a_enviar;
+            for (String mensaje : _botonesPresionados)
+            {
+                mensaje_a_enviar = mensaje_a_enviar + mensaje;
+            }
+
+            if (!EsElPrimerBotonDeLaCombinacion(_botonesPresionados, mensajeDelBotonActual)) // Si no es el primer boton de la lista mandamos el mensaje.
+            {
+                cu.responder_a_Clientes(cc, ("G" + String(macroPos) + mensaje_a_enviar).c_str());
+            }
+
+            if (EsElPrimerBotonDeLaCombinacion(_botonesPresionados, mensajeDelBotonActual) && !esCombinacion) // Si es el primer Boton de la lista pero no es una combinacion de teclas mandamos el mensaje.
+            {
+                cu.responder_a_Clientes(cc, ("G" + String(macroPos) + mensaje_a_enviar).c_str());
+                esCombinacion = false;
+            }
+
+            // Actualizamos el momento de la ultima activacion de un boton
+            SetTiempoUltimaAccion();
+            // Sacamos el boton que se dejo de apretar de la lista
+            _botonesPresionados.remove(mensajeDelBotonActual);
+        }
+    }
+}
+
+bool ControladorBotones::EsElPrimerBotonDeLaCombinacion(std::list<String> lista, String elemento)
+{
+    if (lista.front() == elemento)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool ControladorBotones::EstaEnLaLista(std::list<String> lista, String elemento)
+{
+    auto iterador = std::find(lista.begin(), lista.end(), elemento);
+    if (iterador != lista.end())
+    {
+        return true;
+    }
+    else
+    {
+        return false;
     }
 }
 

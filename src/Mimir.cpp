@@ -9,9 +9,11 @@
 #include "Definiciones/gpio.h"
 #include "Definiciones/constantes.h"
 #include "driver/rtc_io.h"
+#include "Pantalla.h"
 
 extern int macroPos;
 extern int menuPos;
+extern bool interrumpirAnimacion;
 
 Mimir::Mimir()
 {
@@ -36,6 +38,8 @@ void Mimir::IniciarMimir(ControladorClientes &cc, ControladorBotones &cb, Contro
         CargarPosiciones();
         // Mostramos el GPIO que desperto al ESP
         Print_GPIO_wake_up(cc, cb, cu);
+
+        interrumpirAnimacion = false;
     }
 
     // DeepSleep
@@ -89,7 +93,7 @@ void Mimir::SonarAlDespertar()
 }
 
 // Todo sobre dormir el ESP
-void Mimir::A_Mimir(ControladorClientes &cCLTs, long tiempoDeUltimaAccion)
+void Mimir::A_Mimir(ControladorClientes &cCLTs, long tiempoDeUltimaAccion, Pantalla &p)
 {
     if ((millis() - tiempoDeUltimaAccion) > tiempoEspera)
     {
@@ -98,6 +102,10 @@ void Mimir::A_Mimir(ControladorClientes &cCLTs, long tiempoDeUltimaAccion)
         GuardarClientes(cCLTs);
 
         GuardarPosiciones();
+
+        interrumpirAnimacion = true;
+        menuPos = 4;
+        delay(100);
 
         esp_deep_sleep_start();
     }
