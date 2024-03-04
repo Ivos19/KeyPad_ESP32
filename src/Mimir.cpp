@@ -63,12 +63,12 @@ void Mimir::Print_GPIO_wake_up(ControladorClientes &cc, ControladorBotones &cb, 
     esp_sleep_wakeup_cause_t causa = esp_sleep_get_wakeup_cause();
     uint64_t GPIO_reason = esp_sleep_get_ext1_wakeup_status();
 
-    debugSleepPrint("| Razon: ");
+    debugSleepPrint("\033[32m| Razon: ");
     debugSleepPrint(causa);
     debugSleepPrint(" | Se desperto por GPIO ");
     int gpio = (log(GPIO_reason)) / log(2);
     debugSleepPrint(gpio);
-    debugSleepPrintln(" |");
+    debugSleepPrintln(" |\033[0m");
 
     cu.responder_a_Clientes(cc, ("G" + String(macroPos) + cb.GetMensajeBotonBoton(gpio)).c_str());
 
@@ -79,7 +79,7 @@ void Mimir::CargarPosiciones()
 {
     macroPos = preferences.getInt("macroPos", 1);
     menuPos = preferences.getInt("menuPos", 1);
-    debugSleepPrintln("| MenuPos: " + String(menuPos) + " | MacroPos: " + String(macroPos) + " |");
+    debugSleepPrintln("\033[32m| MenuPos: " + String(menuPos) + " | MacroPos: " + String(macroPos) + " | \033[0m");
 }
 
 void Mimir::SonarAlDespertar()
@@ -153,7 +153,7 @@ bool Mimir::PasoElTiempo()
 
 void Mimir::CargarClientes(ControladorClientes &cCLTs)
 {
-    debugSleepPrintln(" <-----> ARRIBA! ARRIBA! <----->");
+    debugSleepPrintln("\033[31m <-----> ARRIBA! ARRIBA! <-----> \033[0m");
     // Leer los datos de clientes desde la NVS
     String serializedData = preferences.getString("clientes", "");
 
@@ -163,22 +163,50 @@ void Mimir::CargarClientes(ControladorClientes &cCLTs)
         StaticJsonDocument<1000> doc;
         DeserializationError error = deserializeJson(doc, serializedData);
 
-        debugSleepPrint(" <--- Cliente en memoria NVS: ");
-        debugSleepPrint(serializedData);
-        debugSleepPrintln(" ---");
+        debugSleepPrintln("\033[33m v--- Cliente en memoria NVS: ---v \033[93m");
+        debugSleepPrintln(serializedData);
+        debugSleepPrintln("\033[33m ^-------------------------------^ \033[0m");
 
         if (!error)
         {
             // Recuperar los clientes deserializados
             for (int i = 0; i < maxClientes; i++)
             {
-                IPAddress ipCLT;
+
+                JsonObject cliente = doc[i];
+
+                // Obtener la dirección IP y el puerto del cliente
+                const char* ipString = cliente["ip"];
+                int port = cliente["port"];
+                
                 int portCLT;
+                portCLT = cliente["port"].as<int>();
 
-                ipCLT.fromString(doc[i]["ip"].as<String>());
-                portCLT = doc[i]["port"].as<int>();
+                // Convertir la cadena IP en una instancia de IPAddress
+                IPAddress ip;
+                if (ip.fromString(ipString)) {
+                    // Si la conversión es exitosa, imprimir la dirección IP
+                    Serial.print("Client ");
+                    Serial.print(i);
+                    Serial.print(" - IP Address: ");
+                    Serial.print(ip);
+                    Serial.print(", Port: ");
+                    Serial.println(port);
+                } else {
+                    Serial.println("Failed to parse IP address");
+                }
+                
+                cCLTs.CrearCliente(ip, portCLT);
 
-                cCLTs.CrearCliente(ipCLT, portCLT);
+
+                // IPAddress ipCLT;
+                // int portCLT;
+
+                // ipCLT.fromString(doc[i]["ip"].as<String>());
+
+                // portCLT = doc[i]["port"].as<int>();
+
+                // cCLTs.CrearCliente(ipCLT, portCLT);
             }
         }
     }
@@ -188,7 +216,7 @@ void Mimir::CargarClientes(ControladorClientes &cCLTs)
 
 void Mimir::GuardarClientes(ControladorClientes &cCLTs)
 {
-    debugSleepPrintln(" <-----> A MIMIR! <----->");
+    debugSleepPrintln("\033[31m <-----> A MIMIR! <-----> \033[0m");
     // Serializar los datos de clientes para meterlos en la NVS
     StaticJsonDocument<1000> doc;
     for (int i = 0; i < maxClientes; i++)
@@ -201,9 +229,9 @@ void Mimir::GuardarClientes(ControladorClientes &cCLTs)
     // Guardar los datos serializados en la NVS
     String serializedData;
     serializeJson(doc, serializedData);
-    debugSleepPrint(" ---> Cliente en RAM: ");
-    debugSleepPrint(serializedData);
-    debugSleepPrintln(" ---");
+    debugSleepPrintln("\033[33m v--- Clientes en RAM: ---v \033[93m");
+    debugSleepPrintln(serializedData);
+    debugSleepPrintln("\033[33m ^------------------------^ \033[0m");
 
     // Revisamos que tenemos en memoria para no guardar si es lo mismo
     String dataClientesEnMemoria = preferences.getString("clientes", "");

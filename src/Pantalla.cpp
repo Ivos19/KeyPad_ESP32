@@ -112,7 +112,7 @@ int Pantalla::ObtenerClima()
         String payload = http.getString();
         // const char *payload = "{\"coord\":{\"lon\":-60.6393,\"lat\":-32.9468},\"weather\":[{\"id\":800,\"main\":\"Clear\",\"description\":\"clear sky\",\"icon\":\"01n\"}],\"base\":\"stations\",\"main\":{\"temp\":9.95,\"feels_like\":9.09,\"temp_min\":9.95,\"temp_max\":10.62,\"pressure\":1013,\"humidity\":81},\"visibility\":10000,\"wind\":{\"speed\":2.06,\"deg\":190},\"clouds\":{\"all\":0},\"dt\":1692863101,\"sys\":{\"type\":1,\"id\":8217,\"country\":\"AR\",\"sunrise\":1692873030,\"sunset\":1692913194},\"timezone\":-10800,\"id\":3838583,\"name\":\"Rosario\",\"cod\":200}";
 
-        debugPantallaPrintln(payload);
+        //debugPantallaPrintln(payload);
 
         // Parsear el JSON
         StaticJsonDocument<1024> doc;
@@ -141,13 +141,13 @@ int Pantalla::ObtenerClima()
                 idClima = idC / 100;
             }
 
-            debugPantallaPrint("| Id CLima: ");
+            debugPantallaPrint("\033[34m| Id CLima: ");
             debugPantallaPrint(idClima);
             debugPantallaPrint(" | Temperatura: ");
             debugPantallaPrint(tempClima);
             debugPantallaPrint(" | Humedad: ");
             debugPantallaPrint(humedadClima);
-            debugPantallaPrintln(" |");
+            debugPantallaPrintln(" | \033[0m");
         }
     }
     else

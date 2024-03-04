@@ -29,6 +29,7 @@ const int tonoConecto = 2000; // Frecuencia tono alto
 #define anchoBarra 3
 
 // Tiempo que debe pasar sin presionar ningun boton para dormir el dispositivo
-#define tiempoEspera (20 * 1000)
+#define tiempoEspera (1 * 15 * 1000) // = 30mins (min - seg - ms)
 
 #endif
+

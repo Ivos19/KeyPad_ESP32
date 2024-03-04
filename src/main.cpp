@@ -48,7 +48,7 @@ void setup()
   debugPrintln("| Iniciado ESP en: |");
 
   despertado = esp_sleep_get_wakeup_cause();
-  debugSleepTrue(!despertado, "| Razon: " + String(despertado) + " | Inicio desde 0 |");
+  debugSleepTrue(!despertado, "\033[36m | Razon: " + String(despertado) + " | Inicio desde 0 |\033[0m");
 
 #pragma region Setear Wifi y OTA
 
